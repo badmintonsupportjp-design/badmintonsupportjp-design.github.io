@@ -1,7 +1,8 @@
-const CACHE_NAME = 'bscore-cache-v1';
+const CACHE_NAME = 'bscore-cache-v2';
 const urlsToCache = [
   './',
   './index.html',
+  './app.html',
   './styles.css',
   './app.js',
   './manifest.json',
@@ -9,6 +10,7 @@ const urlsToCache = [
 ];
 
 self.addEventListener('install', event => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
@@ -19,17 +21,23 @@ self.addEventListener('install', event => {
 
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
+    fetch(event.request)
       .then(response => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
+        // 必要に応じてキャッシュを更新
+        const resClone = response.clone();
+        caches.open(CACHE_NAME).then(cache => {
+          cache.put(event.request, resClone);
+        });
+        return response;
+      })
+      .catch(() => {
+        return caches.match(event.request);
       })
   );
 });
 
 self.addEventListener('activate', event => {
+  event.waitUntil(clients.claim());
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
     caches.keys().then(cacheNames => {

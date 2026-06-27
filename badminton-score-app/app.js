@@ -272,10 +272,11 @@ function endGame() {
 
 // Result View Logic
 function showMatchResult(id) {
-  const match = matchHistory.find(m => m.id === id);
-  if (!match) return;
+  try {
+    const match = matchHistory.find(m => m.id === id);
+    if (!match) return;
 
-  const isWin = match.winner === 'A';
+    const isWin = match.winner === 'A';
   const statusEl = document.getElementById('result-status');
   statusEl.innerText = isWin ? '勝利' : '敗北';
   statusEl.style.color = isWin ? 'var(--accent)' : 'var(--danger)';
@@ -295,6 +296,10 @@ function showMatchResult(id) {
 
   const timeline = document.getElementById('official-score-sheet');
   
+  // 過去履歴の互換性対応
+  const namesA = match.namesA || [match.teamA, ''];
+  const namesB = match.namesB || [match.teamB, ''];
+  
   // 公式スコアシート（ダブルスは名前2段でサーブ権がある行に記載）
   let tableHTML = `<tr><th>選手名</th><th>0</th>`;
   match.history.forEach((_, i) => tableHTML += `<th>${i + 1}</th>`);
@@ -303,7 +308,7 @@ function showMatchResult(id) {
   let gridA0 = [], gridA1 = [], gridB0 = [], gridB1 = [];
   
   // 初期状態
-  let curServe = match.history.length > 0 ? match.history[0].snapshot.serve : match.serve;
+  let curServe = match.history.length > 0 ? (match.history[0].snapshot ? match.history[0].snapshot.serve : match.serve) : match.serve;
   gridA0.push(curServe === 'A' ? '0' : '');
   gridA1.push('');
   gridB0.push(curServe === 'B' ? '0' : '');
@@ -339,27 +344,38 @@ function showMatchResult(id) {
     let idx = gridA0.length - 1;
     
     if (srv === 'A') {
-      if (pA[srvPos] === 0) gridA0[idx] = sA.toString();
-      else gridA1[idx] = sA.toString();
+      if (match.mode === 'doubles') {
+        if (pA[srvPos] === 0) gridA0[idx] = sA.toString();
+        else gridA1[idx] = sA.toString();
+      } else {
+        gridA0[idx] = sA.toString();
+      }
     } else {
-      if (pB[srvPos] === 0) gridB0[idx] = sB.toString();
-      else gridB1[idx] = sB.toString();
+      if (match.mode === 'doubles') {
+        if (pB[srvPos] === 0) gridB0[idx] = sB.toString();
+        else gridB1[idx] = sB.toString();
+      } else {
+        gridB0[idx] = sB.toString();
+      }
     }
   });
 
-  tableHTML += `<tr><th>${match.namesA[0]}</th>` + gridA0.map(v => `<td>${v}</td>`).join('') + `</tr>`;
-  if (match.mode === 'doubles') {
-    tableHTML += `<tr><th>${match.namesA[1]}</th>` + gridA1.map(v => `<td>${v}</td>`).join('') + `</tr>`;
+  tableHTML += `<tr><th>${namesA[0]}</th>` + gridA0.map(v => `<td>${v}</td>`).join('') + `</tr>`;
+  if (match.mode === 'doubles' && namesA[1]) {
+    tableHTML += `<tr><th>${namesA[1]}</th>` + gridA1.map(v => `<td>${v}</td>`).join('') + `</tr>`;
   }
   
-  tableHTML += `<tr><th>${match.namesB[0]}</th>` + gridB0.map(v => `<td>${v}</td>`).join('') + `</tr>`;
-  if (match.mode === 'doubles') {
-    tableHTML += `<tr><th>${match.namesB[1]}</th>` + gridB1.map(v => `<td>${v}</td>`).join('') + `</tr>`;
+  tableHTML += `<tr><th>${namesB[0]}</th>` + gridB0.map(v => `<td>${v}</td>`).join('') + `</tr>`;
+  if (match.mode === 'doubles' && namesB[1]) {
+    tableHTML += `<tr><th>${namesB[1]}</th>` + gridB1.map(v => `<td>${v}</td>`).join('') + `</tr>`;
   }
 
-  timeline.innerHTML = tableHTML;
+    timeline.innerHTML = tableHTML;
 
-  showView('result');
+    showView('result');
+  } catch (error) {
+    alert('エラーが発生しました: ' + error.message + '\n' + error.stack);
+  }
 }
 
 document.getElementById('btn-result-home').addEventListener('click', () => {
