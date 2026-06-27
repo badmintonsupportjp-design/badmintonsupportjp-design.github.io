@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'bscore-cache-v3';
+﻿const CACHE_NAME = 'bscore-cache-v4';
 const urlsToCache = [
   './',
   './index.html',
@@ -51,4 +51,5 @@ self.addEventListener('activate', event => {
     })
   );
 });
+
 
