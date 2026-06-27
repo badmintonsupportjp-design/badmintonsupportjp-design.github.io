@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BADMINTON SUPPORT</title>
+    <meta name="description" content="バドミントンアプリ、大会、店舗、講習会情報の総合ポータル">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="assets/logo.png" alt="BADMINTON SUPPORT Logo">
+        </div>
+        <nav class="nav">
+            <a href="#apps">アプリ</a>
+            <a href="#shop">店舗情報</a>
+            <a href="tournaments.html">大会情報</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-bg-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+            </div>
+            <div class="hero-content">
+                <h1>あなたのバドミントンを、<br>次のレベルへ。</h1>
+                <p>スコア管理から戦術分析まで。<br>プレイヤーのすべてをサポートします。</p>
+                <a href="#apps" class="cta-button">アプリを見る</a>
+            </div>
+        </section>
+
+        <section id="apps" class="section">
+            <h2 class="section-title">サポートアプリ</h2>
+            
+            <!-- 有料アプリ（先頭に配置） -->
+            <div class="app-card paid" style="margin-bottom: 3rem;">
+                <span class="badge paid-badge">PREMIUM</span>
+                <h3>バドノート（ラリー分析・戦術アプリ）</h3>
+                <p class="app-desc">ショットの傾向やラリーの展開をデータ化し、あなたの強みと弱みを浮き彫りにする戦術ノートです。</p>
+                <div class="psych-box danger">
+                    <p><strong>曖昧な記憶で、同じミスを繰り返していませんか？</strong></p>
+                    <p>「なんとなく」の感覚だけで試合を振り返っていては、負けた本当の理由には気づけません。<br>弱点を放置したまま無目的な練習を続けることは、上達への貴重な時間を大きくロスすることに繋がります。データに基づく客観的な分析で、勝利への最短ルートを歩みましょう。</p>
+                </div>
+                <a href="https://badminton-tactics-shot-lp.web.app/" target="_blank" class="app-link premium-link">詳細を見る</a>
+            </div>
+
+            <div class="app-grid">
+                <!-- 無料アプリ1 -->
+                <div class="app-card free">
+                    <span class="badge free-badge">FREE</span>
+                    <h3>スコアアプリ</h3>
+                    <p class="app-desc">日々の試合スコアを簡単に記録・管理できるアプリです。</p>
+                    <div class="coming-soon-small">
+                        <p class="glitch-text" data-text="COMING SOON..." style="font-size: 1.5rem; margin-bottom: 0;">COMING SOON...</p>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">現在開発中</span>
+                    </div>
+                </div>
+
+                <!-- 無料アプリ2 -->
+                <div class="app-card free">
+                    <span class="badge free-badge">FREE</span>
+                    <h3>組み合わせアプリ</h3>
+                    <p class="app-desc">練習や大会での対戦組み合わせを自動生成・管理します。</p>
+                    <div class="coming-soon-small">
+                        <p class="glitch-text" data-text="COMING SOON..." style="font-size: 1.5rem; margin-bottom: 0;">COMING SOON...</p>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">現在開発中</span>
+                    </div>
+                </div>
+
+                <!-- 無料アプリ3 -->
+                <div class="app-card free">
+                    <span class="badge free-badge">FREE</span>
+                    <h3>大会ランキングアプリ</h3>
+                    <p class="app-desc">大会成績からプレイヤーのランキングを算出・表示します。</p>
+                    <div class="coming-soon-small">
+                        <p class="glitch-text" data-text="COMING SOON..." style="font-size: 1.5rem; margin-bottom: 0;">COMING SOON...</p>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">現在開発中</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- アプリ情報 無料登録 -->
+            <div class="registration-cta" style="margin-top: 4rem; text-align: center; background: rgba(30, 41, 59, 0.7); padding: 4rem 2rem; border-radius: 20px; border: 1px solid var(--accent-blue); box-shadow: 0 0 30px rgba(0, 229, 255, 0.15);">
+                <h3 style="font-size: 2rem; margin-bottom: 1rem; color: #fff;">最新アプリ情報を無料で受け取る</h3>
+                <p style="color: var(--text-muted); margin-bottom: 2.5rem; font-size: 1.1rem;">開発中の無料アプリリリース情報をいち早くお届けします。</p>
+                <form action="#" method="POST" style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                    <input type="email" placeholder="メールアドレスを入力" required style="padding: 1rem 2rem; width: 100%; max-width: 400px; border-radius: 30px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.5); color: #fff; font-size: 1rem; outline: none; transition: border-color 0.3s;">
+                    <button type="submit" class="cta-button" style="background: var(--accent-blue); color: var(--bg-color); border: none; cursor: pointer; padding: 1rem 3rem; font-size: 1.1rem;">無料登録する</button>
+                </form>
+                <p style="font-size: 0.85rem; color: #888; margin-top: 1.5rem;">※登録は無料で、いつでも配信停止が可能です。<br>
+                <a href="https://docs.google.com/forms/d/e/XXXXX/viewform" target="_blank" style="color: var(--accent-blue); text-decoration: underline; margin-top: 0.5rem; display: inline-block;">配信停止（登録解除）をご希望の方はこちら</a></p>
+            </div>
+        </section>
+
+        <section id="shop" class="section dark-section">
+            <h2 class="section-title">店舗情報</h2>
+            <div class="coming-soon">
+                <p class="glitch-text" data-text="COMING SOON...">COMING SOON...</p>
+                <span>厳選された店舗情報を準備中です。</span>
+            </div>
+        </section>
+
+        <section id="tournament" class="section">
+            <h2 class="section-title">大会情報</h2>
+            <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+                <p class="section-desc" style="margin-bottom: 2rem;">日本バドミントン協会をはじめ、全国47都道府県のバドミントン協会公式サイトへのリンク集をご用意しています。<br>最新の大会要項や結果はこちらからご確認ください。</p>
+                <a href="tournaments.html" class="cta-button">全国の協会リンク集を見る</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 BADMINTON SUPPORT. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
