@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>バドミントンスコア</title>
+  
+  <!-- PWA Settings -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  <link rel="apple-touch-icon" href="icon.png">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app" class="app-container">
+    
+    <!-- 1. Home / History View -->
+    <section id="view-home" class="view active">
+      <header class="app-header glass">
+        <h1>バドミントンスコア</h1>
+        <button id="btn-new-game" class="btn primary glowing">新規ゲーム</button>
+      </header>
+      
+      <main class="content">
+        <div class="stats-overview">
+          <div class="stat-card">
+            <span class="stat-label">総試合数</span>
+            <span class="stat-value" id="stat-total">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">勝率</span>
+            <span class="stat-value highlight" id="stat-winrate">0%</span>
+          </div>
+        </div>
+        
+        <h2>試合履歴</h2>
+        <div id="history-list" class="history-list">
+          <div class="empty-state">
+            <p>まだ記録がありません。<br>初勝利を記録しましょう！</p>
+          </div>
+        </div>
+      </main>
+    </section>
+
+    <!-- 2. Settings View -->
+    <section id="view-settings" class="view">
+      <header class="app-header">
+        <button class="btn icon-btn" id="btn-back-home">◀ 戻る</button>
+        <h2>試合設定</h2>
+      </header>
+      <main class="content setup-form" style="padding: 1rem;">
+        
+        <div class="form-group" style="margin-bottom: 0.8rem;">
+          <input type="text" id="tournament-name" placeholder="大会名やイベント名 (任意)" style="width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.2); color: #fff; font-size: 1rem;">
+        </div>
+
+        <div style="display: flex; gap: 0.8rem; margin-bottom: 1rem;">
+          <div class="form-group" style="flex: 1; margin-bottom: 0;">
+            <label>形式</label>
+            <div class="radio-group">
+              <input type="radio" id="mode-singles" name="gameMode" value="singles" checked>
+              <label for="mode-singles" style="padding: 0.5rem;">シングル</label>
+              <input type="radio" id="mode-doubles" name="gameMode" value="doubles">
+              <label for="mode-doubles" style="padding: 0.5rem;">ダブルス</label>
+            </div>
+          </div>
+          
+          <div class="form-group" style="flex: 1; margin-bottom: 0;">
+            <label>点数</label>
+            <div style="display: flex; gap: 0.2rem;">
+              <button type="button" class="btn btn-point" data-pt="8" style="flex:1; padding: 0.5rem;" onclick="setPoints(8)">8</button>
+              <button type="button" class="btn btn-point primary" data-pt="15" style="flex:1; padding: 0.5rem;" onclick="setPoints(15)">15</button>
+              <input type="number" id="game-points" value="15" min="1" placeholder="自由" oninput="clearPointButtons()" style="flex:1; width:100%; min-width:40px; padding: 0.5rem; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.2); color: #fff; font-size: 1rem; text-align: center;">
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1rem;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label>左コート (自分)</label>
+            <input type="text" id="team-a-name1" placeholder="選手1(右)" value="自分" style="padding: 0.6rem; margin-bottom: 0.5rem;">
+            <input type="text" id="team-a-name2" placeholder="選手2(左)" value="ペア" class="doubles-only" style="display:none; padding: 0.6rem;">
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label>右コート (相手)</label>
+            <input type="text" id="team-b-name1" placeholder="選手1(右)" value="相手" style="padding: 0.6rem; margin-bottom: 0.5rem;">
+            <input type="text" id="team-b-name2" placeholder="選手2(左)" value="ペア" class="doubles-only" style="display:none; padding: 0.6rem;">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label>最初のサーブ</label>
+          <div class="radio-group">
+            <input type="radio" id="serve-init-a" name="initServe" value="A" checked>
+            <label for="serve-init-a" style="padding: 0.5rem;">左コート(自分)</label>
+            
+            <input type="radio" id="serve-init-b" name="initServe" value="B">
+            <label for="serve-init-b" style="padding: 0.5rem;">右コート(相手)</label>
+          </div>
+        </div>
+
+        <button id="btn-start-game" class="btn primary full-width" style="padding: 0.8rem;">試合開始</button>
+      </main>
+    </section>
+
+    <!-- 3. Scoring View -->
+    <section id="view-scoring" class="view landscape-forced">
+      <header class="scoring-header">
+        <button class="btn icon-btn danger" id="btn-abort">終了</button>
+        <div class="serve-indicator">サーブ権</div>
+        <button class="btn icon-btn" id="btn-undo">1つ戻す</button>
+      </header>
+
+      <div class="scoreboard">
+        <div class="team-panel left" id="panel-a">
+          <h3 class="team-name" id="name-a-display" style="display:none;">自分</h3>
+          <div class="court-positions" id="court-a">
+            <div class="pos-box"><div class="pos-label">左</div><div class="serve-dot" id="serve-a-left">🏸</div><span id="pos-a-left" class="pos-name"></span></div>
+            <div class="pos-box"><div class="pos-label">右</div><div class="serve-dot" id="serve-a-right">🏸</div><span id="pos-a-right" class="pos-name">自分</span></div>
+          </div>
+          <div class="score-display" id="score-a">0</div>
+          <button class="btn-score-add" data-team="A">得点</button>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <div class="team-panel right" id="panel-b">
+          <h3 class="team-name" id="name-b-display" style="display:none;">相手</h3>
+          <div class="court-positions" id="court-b">
+            <div class="pos-box"><div class="pos-label">左</div><div class="serve-dot" id="serve-b-left">🏸</div><span id="pos-b-left" class="pos-name"></span></div>
+            <div class="pos-box"><div class="pos-label">右</div><div class="serve-dot" id="serve-b-right">🏸</div><span id="pos-b-right" class="pos-name">相手</span></div>
+          </div>
+          <div class="score-display" id="score-b">0</div>
+          <button class="btn-score-add" data-team="B">得点</button>
+        </div>
+      </div>
+      
+      <div style="padding: 1rem; margin-top: auto;">
+        <button id="btn-finish-game" class="btn primary glowing full-width">試合終了</button>
+      </div>
+    </section>
+
+    <!-- 4. Result / Score Sheet View -->
+    <section id="view-result" class="view">
+      <header class="app-header no-print">
+        <button class="btn icon-btn" id="btn-result-home">ホーム</button>
+        <h2>試合結果</h2>
+        <div class="share-actions">
+          <button class="btn icon-btn btn-line" id="btn-line">LINE</button>
+          <button class="btn icon-btn" id="btn-pdf">PDF</button>
+          <button class="btn icon-btn" id="btn-share">共有</button>
+        </div>
+      </header>
+      
+      <main class="content">
+        <div class="result-card glass" id="score-sheet-capture">
+          <div class="print-header">
+            <h1>公式スコアシート</h1>
+          </div>
+          <h1 class="result-title" id="result-status">勝利</h1>
+          <div class="final-score">
+            <div class="team-result">
+              <span id="result-name-a">自分</span>
+              <span class="score" id="result-score-a">21</span>
+            </div>
+            <div class="vs">-</div>
+            <div class="team-result">
+              <span class="score" id="result-score-b">19</span>
+              <span id="result-name-b">相手</span>
+            </div>
+          </div>
+          
+          <div class="official-scoresheet-container">
+            <h3>得点経過</h3>
+            <div class="table-scroll">
+              <table id="official-score-sheet" class="score-table">
+                <!-- 生成されたテーブルがここに入る -->
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </section>
+
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
