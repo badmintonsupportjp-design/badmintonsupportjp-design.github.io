@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "Badminton Score & Analytics",
   "short_name": "バドミントンスコア",
   "description": "体育館のオフライン環境でもサクサク動くバドミントン戦績アプリ",
@@ -8,12 +8,11 @@
   "theme_color": "#0f172a",
   "icons": [
     {
-      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iIzNiODJmNiIvPjx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1zaXplPSI1MCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkI8L3RleHQ+PC9zdmc+",
-      "sizes": "192x192",
-      "type": "image/svg+xml",
+      "src": "icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ],
   "orientation": "any"
 }
-

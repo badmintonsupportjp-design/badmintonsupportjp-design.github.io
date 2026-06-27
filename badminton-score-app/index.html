@@ -161,6 +161,11 @@
       font-size: 0.8rem;
     }
   </style>
+  <script>
+    if (localStorage.getItem('bscore_registered') === 'true') {
+      window.location.replace('./app.html');
+    }
+  </script>
 </head>
 <body>
 
@@ -200,6 +205,7 @@
       <div class="feature-card strong-point">
         <h3>🏸 ダブルス・ポジションの「全自動」計算</h3>
         <p>バドミントンの審判で一番間違えやすい「今のサーブ、どっちが打つんだっけ？」という混乱を完全に排除。公式ルールに則り、点数を入れるだけでポジションを全自動で入れ替えます。</p>
+        <img src="score-bord.png" alt="スコアボード画面" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
       </div>
 
       <div class="feature-card">
@@ -229,7 +235,7 @@
   <section id="opt-in-section" class="opt-in">
     <h2>完全無料のスコアアプリを利用する</h2>
     <p>メールアドレスをご登録いただくと、すぐにアプリをご利用いただけます。（いつでも解除可能）<br>今後のアップデート情報や新機能のお知らせもお届けします。</p>
-    <form class="opt-in-form" onsubmit="event.preventDefault(); window.location.href='./app.html';">
+    <form class="opt-in-form" onsubmit="event.preventDefault(); localStorage.setItem('bscore_registered', 'true'); window.location.href='./app.html';">
       <input type="email" placeholder="メールアドレスを入力" required>
       <button type="submit">無料でアプリを起動する</button>
     </form>
